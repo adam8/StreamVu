@@ -61,6 +61,10 @@ module.exports = function (grunt) {
           '.tmp/styles/{,*/}*.css',
           '<%= config.app %>/images/{,*/}*'
         ]
+      },
+      react: {
+        files: '<%= config.app %>/src/*.jsx',
+        tasks: ['react']
       }
     },
 
@@ -335,7 +339,23 @@ module.exports = function (grunt) {
         'imagemin',
         'svgmin'
       ]
+    },
+    
+    // Compile React JSX to JavaScript: https://gist.github.com/slashdotdash/9102812
+    react: {
+      jsx: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= config.app %>/src',
+            src: [ '**/*.jsx' ],
+            dest: '<%= config.app %>/scripts',
+            ext: '.js'
+          }
+        ]
+      }
     }
+    
   });
 
 
@@ -390,7 +410,8 @@ module.exports = function (grunt) {
     'modernizr',
     'rev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'react'
   ]);
 
   grunt.registerTask('default', [
@@ -398,4 +419,8 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+  
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-react');
+  
 };
