@@ -101,7 +101,43 @@ h1 a:link, h1 a:visited { color: #222;}
   height: 40px;
   line-height: 40px;
 }
+.breadcrumb-item a:hover {
+  background: #000;
+}
 
+.time-options {  
+  font-size: 14px;
+  line-height: 14px;
+  position: absolute;
+  top: 0;
+  right: 175px;
+  height: 6vh;
+  width: 200px;
+  display:flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  align-content: center;
+  justify-content: stretch;
+}
+.time-options div {
+  flex: 1 1 100px;
+  height: 40px;
+  display:flex;
+}
+
+.time-options div:hover {
+  cursor: pointer;
+}
+.time-options div span {
+  margin: auto;
+}
+.active-time-shift .time-box-shift,
+.active-time-today .time-box-today,
+.active-time-week .time-box-week { 
+  background: #6F6F6F;
+  color: #fff;
+}
 
 .btn {
   border: 1px solid #BBB;
@@ -160,7 +196,8 @@ btn:hover {
   flex-wrap: nowrap;
   justify-content: flex-end;*/
 }
-.search-box input {
+.search-box input {  
+  font-size: 14px;
   width: 90px;
   height: 28px;
 }
@@ -347,14 +384,7 @@ h1 {
   height: 50px;
   color: #666;
 }
-.category-list-item:hover {
-  /*background: rgba(240, 240, 249, 0.19);
-  cursor: pointer;*/
-}
 
-/*.sub-category-list-item a:hover {
-  color: #00D;
-}*/
 
 .events-inline {
   display: none;
@@ -377,24 +407,28 @@ h1 {
 .event-item-actions {
   flex: 1 1 120px;
   opacity: 0;
+  background: #BBB;
   /*background: rgba(0, 128, 0, 0.15);*/
   display:flex;
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: stretch;
   align-content: center;
-  justify-content: space-around;
+  justify-content: stretch;
 }
 .event-item-actions img { margin: auto;}
+
+
 .event-list-item:hover {
   background: #fff;
 }
 .event-list-item:hover .event-item-actions {
   opacity: 1;
 }
-.event-item-ok,
-.event-item-discuss {
-  background: #BBB;
+.event-action {
+  height: 50px;
+  margin: auto;
+  color: #fff;
   flex: 1 auto;
   display:flex;
   flex-direction: column;
@@ -402,12 +436,12 @@ h1 {
   align-content: center;
 }
 
-.event-item-ok:hover,
-.event-item-discuss:hover {
+.event-action:hover {
   background: #333;
-  opacity: 1;
   cursor: pointer;
 }
+
+.event-action span { margin: auto; }
 
 .event-item-column a {
   color: #333;
@@ -460,6 +494,8 @@ h1 {
 .item-priority-low .event-item-priority-indicator { background: transparent; }
 .item-priority-high .event-item-priority-indicator { background: #F00; }
 
+.item-priority-high .event-item-flag { color: #555; }
+.item-priority-high .event-item-flag:hover { color: #fff; }
 
 /*.event-list-item:hover a {
   color: #EEE;
@@ -482,5 +518,28 @@ h1 {
   text-align: center;
 }
 
+button {
+  background: #6F6F6F;
+  color: #fff;
+  border: 0;
+  font-weight: bold;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 25px;
+  margin-right: 2px;
+}
+button:hover {
+  background: #000;
+}
+.event-item-detail {
+  margin: 25px auto 0 auto;
+  padding: 6vw;
+}
+.event-item-detail table {
+  background: #f9f9f9;
+}
+.event-item-detail td {
+  padding: 10px;
+}
 
 

@@ -12,12 +12,662 @@ React.initializeTouchEvents(true);
 
 // Convenience 
 function slugify(text) {
+  // console.log('slugify: TODO: get rid of this!');
   return text.toString().toLowerCase()
     .replace(/\s+/g, '-')           // Replace spaces with -
+    .replace(/\:+/g, '-')           // Replace colon with dash
     .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
     .replace(/\-\-+/g, '-')         // Replace multiple - with single -
     .trim()                         // Trim whitespace
 }
+function randomStr(num) {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for( var i=0; i < num; i++ ) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+}
+
+// Hard Coded Events
+var eventJson = [ {
+                  "id":"2015-04-13-05-15-ppp",
+                  "event_date":"2015-04-13",
+                  "event_time":"05:15",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"07:15",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"3514 out of service, repair to electrical, last down 3/21, uptime 140 hrs",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-07-15-qqq",
+                  "event_date":"2015-04-13",
+                  "event_time":"07:15",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"07:45",
+                  "channel":"operations",
+                  "stream":"forecast",
+                  "priority":"high",
+                  "event":"shortage forecast today, -3 30's, afternoon shift",
+                  "link":"m.ax/z74y"
+                },
+                {
+                  "id":"2015-04-13-07-15-icuy",
+                  "event_date":"2015-04-13",
+                  "event_time":"07:15",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"07:50",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"3512 out of service, repair to electrical, last down 2/14, uptime 35 hrs",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-07-20-ixuyw",
+                  "event_date":"2015-04-13",
+                  "event_time":"07:20",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"07:50",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"3510 out of service, repair to electrical, WARNING last down 3/28 for electrical, uptime 23 hrs",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-08-00-xiryt",
+                  "event_date":"2015-04-13",
+                  "event_time":"08:00",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"08:00",
+                  "channel":"operations",
+                  "stream":"forecast",
+                  "priority":"high",
+                  "event":"shortage forecast today, -3 RS, day shift",
+                  "link":"m.ax/kj8l"
+                },
+                {
+                  "id":"2015-04-13-08-00-xuw",
+                  "event_date":"2015-04-13",
+                  "event_time":"08:00",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"08:00",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"RS10 out of service, PM service, estimated return to service 4/13 20:00",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-08-00-ciw",
+                  "event_date":"2015-04-13",
+                  "event_time":"08:00",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"08:00",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"RS10 out of service, PM service",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-08-00-xuyw",
+                  "event_date":"2015-04-13",
+                  "event_time":"08:00",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"08:00",
+                  "channel":"my-events",
+                  "stream":"approval",
+                  "priority":"low",
+                  "event":"approve PR 2312, stores reorder, $1920",
+                  "link":"m.ax/d9ij"
+                },
+                {
+                  "id":"2015-04-13-20-00-icuwq",
+                  "event_date":"2015-04-13",
+                  "event_time":"20:00",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"20:00",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"RS10 return to service, PM service, down for 12 hrs",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-20-00-ixuiw",
+                  "event_date":"2015-04-13",
+                  "event_time":"20:00",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"20:00",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"RS10 return to service, PM service, down for 12 hrs, actuals $4500",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-08-00-sux",
+                  "event_date":"2015-04-13",
+                  "event_time":"08:00",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"09:15",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"RS11 out of service, repair to hydraulics",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-08-00-uvyw",
+                  "event_date":"2015-04-13",
+                  "event_time":"08:00",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"09:15",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"RS11 out of service, repair to hydraulics, last down 3/24, uptime 160 hrs",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-09-20-vyyq",
+                  "event_date":"2015-04-13",
+                  "event_time":"09:20",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"09:35",
+                  "channel":"operations",
+                  "stream":"vessel",
+                  "priority":"low",
+                  "event":"MV Swift delayed arrival by 16 hrs, now arriving 4/14 06:00",
+                  "link":"m.ax/s7fd"
+                },
+                {
+                  "id":"2015-04-13-10-35-vhyt",
+                  "event_date":"2015-04-13",
+                  "event_time":"10:35",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"10:45",
+                  "channel":"operations",
+                  "stream":"vessel",
+                  "priority":"low",
+                  "event":"MV Taylor arriving early by 8 hrs, now arriving 4/15 16:00",
+                  "link":"m.ax/d90t"
+                },
+                {
+                  "id":"2015-04-13-11-15-sjxy",
+                  "event_date":"2015-04-13",
+                  "event_time":"11:15",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"11:15",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"3514 return to service, down for 6 hrs",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-14-10-bcgs",
+                  "event_date":"2015-04-13",
+                  "event_time":"14:10",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"14:10",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"RS11 return to service, repair to cooling system, down for 56 hrs, actual $5600",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-11-35-ksdfj",
+                  "event_date":"2015-04-13",
+                  "event_time":"11:35",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"11:35",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"SUB.17 high level alarm ON",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-11-45-cgt",
+                  "event_date":"2015-04-13",
+                  "event_time":"11:45",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"11:45",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"SUB.17 high level alarm ON > 10 minutes",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-11-55-xbvcw",
+                  "event_date":"2015-04-13",
+                  "event_time":"11:55",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"11:55",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"SUB.17 high level alarm ON > 10 minutes",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-12-02-cskjvb",
+                  "event_date":"2015-04-13",
+                  "event_time":"12:02",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"12:02",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"SUB.17 high level alarm OFF",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-13-12-02-nxv",
+                  "event_date":"2015-04-13",
+                  "event_time":"12:02",
+                  "stream_date":"2015-04-13",
+                  "stream_time":"12:02",
+                  "channel":"my-events",
+                  "stream":"flagged",
+                  "priority":"low",
+                  "event":"SUB.17 high level alarm OFF",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-06-18-ytwe",
+                  "event_date":"2015-04-14",
+                  "event_time":"06:18",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"07:30",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"RS10 out of service, repair to electrical",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-06-18-jgjh",
+                  "event_date":"2015-04-14",
+                  "event_time":"06:18",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"07:30",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"RS10 out of service, repair to electrical, WARNING last down 4/13, uptime 7 hrs",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-08-00-askdf",
+                  "event_date":"2015-04-14",
+                  "event_time":"08:00",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"08:00",
+                  "channel":"maintenance",
+                  "stream":"KPI",
+                  "priority":"low",
+                  "event":"KPI, reachstacker, PM completion within 5 days, target=90%, actual 80%",
+                  "link":"m.ax/d87w"
+                },
+                {
+                  "id":"2015-04-14-08-00-nvbc",
+                  "event_date":"2015-04-14",
+                  "event_time":"08:00",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"08:00",
+                  "channel":"operations",
+                  "stream":"vessel",
+                  "priority":"low",
+                  "event":"MV Swift load started, expected completion 4/15 12:30",
+                  "link":"m.ax/b74y"
+                },
+                {
+                  "id":"2015-04-14-09-15-poi",
+                  "event_date":"2015-04-14",
+                  "event_time":"09:15",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"08:00",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"RS10 update: parts arriving 4/15, expected return to service 4/15 16:00",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-10-15-nbmn",
+                  "event_date":"2015-04-14",
+                  "event_time":"10:15",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"10:15",
+                  "channel":"maintenance",
+                  "stream":"work",
+                  "priority":"high",
+                  "event":"SUB3 work starting in confined space",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-10-45-ytrd",
+                  "event_date":"2015-04-14",
+                  "event_time":"10:45",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"11:30",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"RS04 out of service, repair to cab",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-10-45-try",
+                  "event_date":"2015-04-14",
+                  "event_time":"10:45",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"11:30",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"RS04 out of service, repair to cab, last down 3/13, uptime 119 hrs",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-11-30-pkju",
+                  "event_date":"2015-04-14",
+                  "event_time":"11:30",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"11:30",
+                  "channel":"my-events",
+                  "stream":"approval",
+                  "priority":"low",
+                  "event":"approve PR 2321, tires for RS04, $16800",
+                  "link":"m.ax/kj8l"
+                },
+                {
+                  "id":"2015-04-14-12-00-ydfs",
+                  "event_date":"2015-04-14",
+                  "event_time":"12:00",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"12:00",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"shortage forecast tomorrow, -2 RS, day shift",
+                  "link":"m.ax/34de"
+                },
+                {
+                  "id":"2015-04-14-12-00-uio",
+                  "event_date":"2015-04-14",
+                  "event_time":"12:00",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"12:00",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"RS08 return to service, PM service, down for 4 days",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-12-00-hry",
+                  "event_date":"2015-04-14",
+                  "event_time":"12:00",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"12:00",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"RS08 return to service, PM service, down for 4 days, actuals $32,000",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-12-40-asd",
+                  "event_date":"2015-04-14",
+                  "event_time":"12:40",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"12:40",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"CV17 throughput at 70% for >10 minutes",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-12-34-xiv",
+                  "event_date":"2015-04-14",
+                  "event_time":"12:34",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"12:50",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"3517 out of service, repair to fuel system, last down 4/12, uptime 12 hrs",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-13-30-sy",
+                  "event_date":"2015-04-14",
+                  "event_time":"13:30",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"13:30",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"CV17 throughput back to 100%",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-14-12-jrv",
+                  "event_date":"2015-04-14",
+                  "event_time":"14:12",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"14:12",
+                  "channel":"operations",
+                  "stream":"vessel",
+                  "priority":"low",
+                  "event":"MV Susanne arrival delayed by 36 hrs, now arriving 4/16 02:00",
+                  "link":"m.ax/39aq"
+                },
+                {
+                  "id":"2015-04-14-14-15-jge",
+                  "event_date":"2015-04-14",
+                  "event_time":"14:15",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"14:15",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"RS04 return to service, repair, down for 3 hrs",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-14-15-yyr",
+                  "event_date":"2015-04-14",
+                  "event_time":"14:15",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"14:15",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"RS04 return to service, repair, down for 3 hrs, actuals $1200",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-14-40-uuuu",
+                  "event_date":"2015-04-14",
+                  "event_time":"14:40",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"14:40",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"ELEC.140 electrical fault, last fault 46 days ",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-14-14-10-kkk",
+                  "event_date":"2015-04-14",
+                  "event_time":"14:50",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"14:50",
+                  "channel":"operations",
+                  "stream":"vessel",
+                  "priority":"low",
+                  "event":"MV Sky Dream delayed arrival by 16 hrs, now arriving 4/15 07:00",
+                  "link":"m.ax/s7fd"
+                },
+                {
+                  "id":"2015-04-14-16-10-mmm",
+                  "event_date":"2015-04-14",
+                  "event_time":"16:10",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"16:10",
+                  "channel":"maintenance",
+                  "stream":"work",
+                  "priority":"low",
+                  "event":"DL.133 wo# 34511 overhaul, project budget $20,000, actual $25,500",
+                  "link":"m.ax/v0kj"
+                },
+                {
+                  "id":"2015-04-14-16-10-nnn",
+                  "event_date":"2015-04-14",
+                  "event_time":"16:10",
+                  "stream_date":"2015-04-14",
+                  "stream_time":"16:10",
+                  "channel":"my-events",
+                  "stream":"flagged",
+                  "priority":"low",
+                  "event":"DL.133 wo# 34511 overhaul, project budget $20,000, actual $25,500",
+                  "link":"m.ax/v0kj"
+                },
+                {
+                  "id":"2015-04-15-06-00-vbbb",
+                  "event_date":"2015-04-15",
+                  "event_time":"06:00",
+                  "stream_date":"2015-04-15",
+                  "stream_time":"06:00",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"RS08 out of service, repair to hydraulics",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-15-06-00-vvv",
+                  "event_date":"2015-04-15",
+                  "event_time":"06:00",
+                  "stream_date":"2015-04-15",
+                  "stream_time":"06:00",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"high",
+                  "event":"RS08 out of service, repair to hydraulics, WARNING 1 day since PM completed, 16 hrs uptime",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-15-06-00-ccc",
+                  "event_date":"2015-04-15",
+                  "event_time":"06:00",
+                  "stream_date":"2015-04-15",
+                  "stream_time":"06:00",
+                  "channel":"my-events",
+                  "stream":"flagged",
+                  "priority":"low",
+                  "event":"RS08 out of service, repair to hydraulics, WARNING 1 day since PM completed, 16 hrs uptime",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-15-11-30-zzz",
+                  "event_date":"2015-04-15",
+                  "event_time":"11:30",
+                  "stream_date":"2015-04-15",
+                  "stream_time":"11:30",
+                  "channel":"operations",
+                  "stream":"vessel",
+                  "priority":"low",
+                  "event":"MV Swift load completed, actual 56000 tons",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-15-08-00-xxx",
+                  "event_date":"2015-04-15",
+                  "event_time":"08:00",
+                  "stream_date":"2015-04-15",
+                  "stream_time":"08:00",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"Warning: RS03 down > 5 days, expected return date <not known>",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-15-08-00-yyy",
+                  "event_date":"2015-04-15",
+                  "event_time":"08:00",
+                  "stream_date":"2015-04-15",
+                  "stream_time":"08:00",
+                  "channel":"my-events",
+                  "stream":"flagged",
+                  "priority":"low",
+                  "event":"Warning: RS03 down > 5 days, expected return date <not known>",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-15-08-00-tttt",
+                  "event_date":"2015-04-15",
+                  "event_time":"08:00",
+                  "stream_date":"2015-04-15",
+                  "stream_time":"08:00",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"Warning: 2507 down > 5 days, expected return date 4/20, waiting for material",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-15-12-00-ddd",
+                  "event_date":"2015-04-15",
+                  "event_time":"12:00",
+                  "stream_date":"2015-04-15",
+                  "stream_time":"12:00",
+                  "channel":"maintenance",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"RS10 return to service, repair, down for 30 hours.",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-15-12-00-sss",
+                  "event_date":"2015-04-15",
+                  "event_time":"12:00",
+                  "stream_date":"2015-04-15",
+                  "stream_time":"12:00",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"RS10 return to service, repair, down for 30 hours",
+                  "link":""
+                },
+                {
+                  "id":"2015-04-15-16-00-www",
+                  "event_date":"2015-04-15",
+                  "event_time":"16:00",
+                  "stream_date":"2015-04-15",
+                  "stream_time":"16:00",
+                  "channel":"operations",
+                  "stream":"equipment",
+                  "priority":"low",
+                  "event":"RS11 return to service, repair to cooling system, down for 56 hrs",
+                  "link":""
+                }
+];
+eventJson = eventJson.sort(function(a,b) { return b.id.localeCompare(a.id) } );
 
 /****** COMPONENTS *********/
 
@@ -61,7 +711,7 @@ var CategoryList = React.createClass({displayName: "CategoryList",
             )
           ), 
           
-           subs.length ? React.createElement(SubCategoryList, {category:  slugify(item.category), activeStream:  this.props.events.activeStream, subs:  subs })  : '', 
+           subs.length ? React.createElement(SubCategoryList, {category:  item.category, activeStream:  this.props.events.activeStream, subs:  subs })  : '', 
           
           React.createElement("div", {className: "events-inline"}, 
             React.createElement(EventList, {events:  this.props.events})
@@ -87,14 +737,14 @@ var SubCategoryList = React.createClass({displayName: "SubCategoryList",
     var items = this.props.subs.map(function(item, index) {
       return (
         React.createElement("div", {className: slugify(item)==activeStream ? 'sub-category-list-item sub-category-active' : 'sub-category-list-item', key: index}, 
-        React.createElement("a", {href:  "/#/events/" + cat + "/" + slugify(item)}, item)
+        React.createElement("a", {href:  "/#/c/" + slugify(cat) + "/" + slugify(item)}, item)
         )
       );
     });
     return React.createElement("div", {className: "sub-category-list"}, 
-              React.createElement("div", {className: activeStream=='all' ? 'sub-category-list-item sub-category-active' : 'sub-category-list-item'}, React.createElement("a", {href: "/#/events/"+cat}, "All")), 
-              items
-           );
+    React.createElement("div", {className: activeStream=='all' ? 'sub-category-list-item sub-category-active' : 'sub-category-list-item'}, React.createElement("a", {href: "/#/c/" + slugify(cat)}, "All")), 
+      items
+    );
   }
 });
 
@@ -104,10 +754,11 @@ var EventList = React.createClass({displayName: "EventList",
     // console.log("activeChannel:", this.props.events.activeChannel);
     // console.log("activeStream:", this.props.events.activeStream);
     if (this.props.events) {
-      var reverseEventsTemp = this.props.events.events.reverse();
+      // var reverseEventsTemp = this.props.events.events.reverse();
+      // var reverseEventsTemp = this.props.events.events;
       var rows = [];
       var lastCategory = null;
-      reverseEventsTemp.forEach(function(event, index) {
+      this.props.events.events.forEach(function(event, index) {
         if (this.props.events.activeChannel !== '') {
           if (event.channel.toLowerCase().indexOf(this.props.events.activeChannel) === -1) {
             return;
@@ -122,10 +773,10 @@ var EventList = React.createClass({displayName: "EventList",
             return;
         }
         if (event.event_date !== lastCategory) {
-          console.log('key', "date-item-" + this.props.events.activeChannel + '-' + this.props.events.activeStream + '-' + index);
-          rows.push(React.createElement(EventListDate, {date: event.event_date, key:  "date-item-" + event.channel + '-' + event.stream + '-' + index}));
+          //console.log('key', "date-item-" + this.props.events.activeChannel + '-' + this.props.events.activeStream + '-' + index);
+          rows.push(React.createElement(EventListDate, {date: event.event_date, key:  index + randomStr(5)}));
         }
-        rows.push(React.createElement(EventListItem, {event: event, key: event.id}));
+        rows.push(React.createElement(EventListItem, {event: event, key:  randomStr(5) }));
         lastCategory = event.event_date;
       }.bind(this));
     }
@@ -138,27 +789,90 @@ var EventListItem = React.createClass({displayName: "EventListItem",
     router: React.PropTypes.func
   },
   render: function() {
-    if (this.context.router.getCurrentParams().eventId) {
-      return React.createElement("div", {className: "event-item-single"}, "Event id: ", this.context.router.getCurrentParams().eventId)
-    } else {
-      return (
-        React.createElement("div", {key: "{this.props.event.id}", className:  'event-list-item item-priority-' + this.props.event.priority}, 
-          React.createElement("div", {className: "event-time"},  this.props.event.event_time), 
-      React.createElement("div", {className: "event-item-column event-title"}, React.createElement("div", {className: "event-item-priority-indicator"}), React.createElement("a", {href: "/#/events/"+this.props.event.id},  this.props.event.event), "  ", /* { this.props.event.channel } - { this.props.event.stream } */" "), 
+    return (
+        React.createElement("div", {id:  'id-' + this.props.event.id, key:  'id-' + this.props.event.id, className:  'event-list-item item-priority-' + this.props.event.priority}, 
+        React.createElement("div", {className: "event-time"},  this.props.event.event_time), 
+        React.createElement("div", {className: "event-item-column event-title"}, React.createElement("div", {className: "event-item-priority-indicator"}), React.createElement("a", {href: "/#/event/"+this.props.event.id},  this.props.event.event), "  ", /* { this.props.event.channel } - { this.props.event.stream } */" "), 
           React.createElement("div", {className: "event-item-actions"}, 
-            React.createElement("div", {className: "event-item-discuss"}, 
-              React.createElement("img", {src: "/images/icon-comment-discussion.png"})
+            React.createElement("div", {className: "event-action event-item-flag"}, 
+              /* <img src="/images/icon-comment-discussion.png" /> */
+              React.createElement("span", null,  this.props.event.priority == 'high' ? 'Unflag' : 'Flag')
             ), 
-            React.createElement("div", {className: "event-item-ok"}, 
-              React.createElement("img", {src: "/images/icon-check.png"})
+            React.createElement("div", {className: "event-action event-item-discuss"}, 
+              /* <img src="/images/icon-comment-discussion.png" /> */
+              React.createElement("span", null, "Assign")
+            ), 
+            React.createElement("div", {className: "event-action event-item-ok"}, 
+              /* <img src="/images/icon-check.png" /> */
+              React.createElement("span", null, "Dismiss")
             )
           )
         )
-      )
-    }         
+      )        
   }
-  
 });
+
+var EventItemDetail = React.createClass({displayName: "EventItemDetail",
+    contextTypes: {
+      router: React.PropTypes.func
+    },
+    render: function() {
+      var eventId = this.context.router.getCurrentParams().eventId;
+      var item;
+      for (i in this.props.events.events) {
+        if(this.props.events.events[i].id && this.props.events.events[i].id === eventId) {
+         item = this.props.events.events[i];
+        }
+      };
+      var day = moment(item.event_date, "YYYY-MM-DD"); 
+      return (
+        React.createElement("div", {className: "event-item-detail"}, 
+          React.createElement("table", null, 
+            React.createElement("tr", null, 
+              React.createElement("td", null, "Description"), 
+              React.createElement("td", null,  item.event)
+            ), 
+            React.createElement("tr", null, 
+              React.createElement("td", null, "Date"), 
+              React.createElement("td", null,  day.format('ddd, MMM Do') )
+            ), 
+            React.createElement("tr", null, 
+              React.createElement("td", null, "Time"), 
+              React.createElement("td", null,  item.event_time)
+            ), 
+            React.createElement("tr", null, 
+              React.createElement("td", null, "Channel"), 
+              React.createElement("td", null, React.createElement("a", {href: "/#/c/" + item.channel},  item.channel))
+            ), 
+            React.createElement("tr", null, 
+              React.createElement("td", null, "Stream"), 
+              React.createElement("td", null, React.createElement("a", {href: "/#/c/" + item.channel + "/" + item.stream},  item.stream))
+            ), 
+            React.createElement("tr", null, 
+              React.createElement("td", null, "Priority"), 
+              React.createElement("td", null,  item.priority)
+            ), 
+            React.createElement("tr", null, 
+              React.createElement("td", null, "Link"), 
+              React.createElement("td", null,  item.link == '' ? 'no link' : item.link)
+            ), 
+            React.createElement("tr", null, 
+              React.createElement("td", null, "Event Type History"), 
+              React.createElement("td", null, "TODO")
+            ), 
+            React.createElement("tr", null, 
+              React.createElement("td", null, "Actions"), 
+              React.createElement("td", null, 
+                React.createElement("button", null, "Flag"), 
+                React.createElement("button", null, "Assign"), 
+                React.createElement("button", null, "Dismiss")
+              )
+            )
+          )
+        )
+      );
+    }
+}); 
 
 var SearchBar = React.createClass({displayName: "SearchBar",
     handleChange: function() {
@@ -168,16 +882,41 @@ var SearchBar = React.createClass({displayName: "SearchBar",
     },
     render: function() {
         return (
-            React.createElement("form", {onSubmit: this.handleSubmit, className: "search-box"}, 
-                React.createElement("input", {
-                    type: "text", 
-                    placeholder: "Search", 
-                    value: this.props.filterText, 
-                    ref: "filterTextInput", 
-                    onChange: this.handleChange}
-                )
-            )
+          React.createElement("form", {onSubmit: this.handleSubmit, className: "search-box"}, 
+              React.createElement("input", {
+                  type: "text", 
+                  placeholder: "Search", 
+                  value: this.props.filterText, 
+                  ref: "filterTextInput", 
+                  onChange: this.handleChange}
+              )
+          )
         );
+    }
+});
+
+var TimeBox = React.createClass({displayName: "TimeBox",
+    render: function() {
+      return (
+        React.createElement("div", {className: 'time-options active-time-' + this.props.timeFilter}, 
+          React.createElement(TimeBoxButton, {thisTime: "shift", handleChangeTime: this.props.handleChangeTime}), 
+          React.createElement(TimeBoxButton, {thisTime: "today", handleChangeTime: this.props.handleChangeTime}), 
+          React.createElement(TimeBoxButton, {thisTime: "week", handleChangeTime: this.props.handleChangeTime})
+        )
+      );
+    }
+});
+
+var TimeBoxButton = React.createClass({displayName: "TimeBoxButton",
+    onChangeTime: function(e) {
+      this.props.handleChangeTime(this.props.thisTime);
+    },
+    render: function() {
+      return (
+        React.createElement("div", {onClick:  this.onChangeTime, ref: "changeTimer", className: "time-box-" + this.props.thisTime}, 
+          React.createElement("span", null, this.props.thisTime)
+        )
+      )
     }
 });
 
@@ -195,7 +934,12 @@ var App = React.createClass({displayName: "App",
   },
   handleUserInput: function(filterText) {
     this.setState({
-        filterText: filterText
+      filterText: filterText
+    });
+  },
+  handleChangeTime: function(newTime) {
+    this.setState({
+      timeFilter: newTime
     });
   },
   getInitialState: function() {
@@ -204,14 +948,13 @@ var App = React.createClass({displayName: "App",
     var activeStream = 'all';
 
     if (this.context.router.getCurrentParams().channelId && !this.context.router.getCurrentParams().streamId) {
-      activePage = 'events';
+      activePage = this.context.router.getCurrentParams().channelId;
       activeStream = 'all';
       activeChannel = this.context.router.getCurrentParams().channelId; 
     } else if (this.context.router.getCurrentParams().streamId) {
-      activePage = 'events';
+      activePage = this.context.router.getCurrentParams().channelId;
       activeChannel = this.context.router.getCurrentParams().channelId;
       activeStream = this.context.router.getCurrentParams().streamId; 
-      console.log('is stream');
     } else if (this.context.router.getCurrentParams().eventId) {
       activeChannel = '';
       activeStream = 'all';
@@ -229,597 +972,14 @@ var App = React.createClass({displayName: "App",
     // console.log('activeChannel',activePage);
     // console.log('activePage',activePage);
     return { 
-      events: [
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"05:15",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"07:15",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"3514 out of service, repair to electrical, last down 3/21, uptime 140 hrs",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"07:15",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"07:45",
-                  "channel":"operations",
-                  "stream":"forecast",
-                  "priority":"high",
-                  "event":"shortage forecast today, -3 30's, afternoon shift",
-                  "link":"m.ax/z74y"
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"07:15",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"07:50",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"3512 out of service, repair to electrical, last down 2/14, uptime 35 hrs",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"07:20",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"07:50",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"3510 out of service, repair to electrical, WARNING last down 3/28 for electrical, uptime 23 hrs",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"08:00",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"08:00",
-                  "channel":"operations",
-                  "stream":"forecast",
-                  "priority":"high",
-                  "event":"shortage forecast today, -3 RS, day shift",
-                  "link":"m.ax/kj8l"
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"08:00",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"08:00",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"RS10 out of service, PM service, estimated return to service 4/13 20:00",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"08:00",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"08:00",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"RS10 out of service, PM service",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"08:00",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"08:00",
-                  "channel":"my-events",
-                  "stream":"approval",
-                  "priority":"low",
-                  "event":"approve PR 2312, stores reorder, $1920",
-                  "link":"m.ax/d9ij"
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"20:00",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"20:00",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"RS10 return to service, PM service, down for 12 hrs",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"20:00",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"20:00",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"RS10 return to service, PM service, down for 12 hrs, actuals $4500",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"08:00",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"09:15",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"RS11 out of service, repair to hydraulics",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"08:00",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"09:15",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"RS11 out of service, repair to hydraulics, last down 3/24, uptime 160 hrs",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"09:20",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"09:35",
-                  "channel":"operations",
-                  "stream":"vessel",
-                  "priority":"low",
-                  "event":"MV Swift delayed arrival by 16 hrs, now arriving 4/14 06:00",
-                  "link":"m.ax/s7fd"
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"10:35",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"10:45",
-                  "channel":"operations",
-                  "stream":"vessel",
-                  "priority":"low",
-                  "event":"MV Taylor arriving early by 8 hrs, now arriving 4/15 16:00",
-                  "link":"m.ax/d90t"
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"11:15",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"11:15",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"3514 return to service, down for 6 hrs",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"14:10",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"14:10",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"RS11 return to service, repair to cooling system, down for 56 hrs, actual $5600",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"11:35",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"11:35",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"SUB.17 high level alarm ON",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"11:45",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"11:45",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"SUB.17 high level alarm ON > 10 minutes",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"11:55",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"11:55",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"SUB.17 high level alarm ON > 10 minutes",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"12:02",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"12:02",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"SUB.17 high level alarm OFF",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-13",
-                  "event_time":"12:02",
-                  "stream_date":"2015-04-13",
-                  "stream_time":"12:02",
-                  "channel":"my-events",
-                  "stream":"user-alert",
-                  "priority":"low",
-                  "event":"SUB.17 high level alarm OFF",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"06:18",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"07:30",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"RS10 out of service, repair to electrical",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"06:18",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"07:30",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"RS10 out of service, repair to electrical, WARNING last down 4/13, uptime 7 hrs",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"08:00",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"08:00",
-                  "channel":"maintenance",
-                  "stream":"KPI",
-                  "priority":"low",
-                  "event":"KPI, reachstacker, PM completion within 5 days, target=90%, actual 80%",
-                  "link":"m.ax/d87w"
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"08:00",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"08:00",
-                  "channel":"operations",
-                  "stream":"vessel",
-                  "priority":"low",
-                  "event":"MV Swift load started, expected completion 4/15 12:30",
-                  "link":"m.ax/b74y"
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"09:15",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"08:00",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"RS10 update: parts arriving 4/15, expected return to service 4/15 16:00",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"10:15",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"10:15",
-                  "channel":"maintenance",
-                  "stream":"work",
-                  "priority":"high",
-                  "event":"SUB3 work starting in confined space",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"10:45",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"11:30",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"RS04 out of service, repair to cab",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"10:45",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"11:30",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"RS04 out of service, repair to cab, last down 3/13, uptime 119 hrs",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"11:30",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"11:30",
-                  "channel":"my-events",
-                  "stream":"approval",
-                  "priority":"low",
-                  "event":"approve PR 2321, tires for RS04, $16800",
-                  "link":"m.ax/kj8l"
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"12:00",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"12:00",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"shortage forecast tomorrow, -2 RS, day shift",
-                  "link":"m.ax/34de"
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"12:00",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"12:00",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"RS08 return to service, PM service, down for 4 days",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"12:00",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"12:00",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"RS08 return to service, PM service, down for 4 days, actuals $32,000",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"12:40",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"12:40",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"CV17 throughput at 70% for >10 minutes",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"12:34",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"12:50",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"3517 out of service, repair to fuel system, last down 4/12, uptime 12 hrs",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"13:30",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"13:30",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"CV17 throughput back to 100%",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"14:12",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"14:12",
-                  "channel":"operations",
-                  "stream":"vessel",
-                  "priority":"low",
-                  "event":"MV Susanne arrival delayed by 36 hrs, now arriving 4/16 02:00",
-                  "link":"m.ax/39aq"
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"14:15",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"14:15",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"RS04 return to service, repair, down for 3 hrs",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"14:15",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"14:15",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"RS04 return to service, repair, down for 3 hrs, actuals $1200",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"14:40",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"14:40",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"ELEC.140 electrical fault, last fault 46 days ",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"14:50",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"14:50",
-                  "channel":"operations",
-                  "stream":"vessel",
-                  "priority":"low",
-                  "event":"MV Sky Dream delayed arrival by 16 hrs, now arriving 4/15 07:00",
-                  "link":"m.ax/s7fd"
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"16:10",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"16:10",
-                  "channel":"maintenance",
-                  "stream":"work",
-                  "priority":"low",
-                  "event":"DL.133 wo# 34511 overhaul, project budget $20,000, actual $25,500",
-                  "link":"m.ax/v0kj"
-                },
-                {
-                  "event_date":"2015-04-14",
-                  "event_time":"16:10",
-                  "stream_date":"2015-04-14",
-                  "stream_time":"16:10",
-                  "channel":"my-events",
-                  "stream":"",
-                  "priority":"low",
-                  "event":"DL.133 wo# 34511 overhaul, project budget $20,000, actual $25,500",
-                  "link":"m.ax/v0kj"
-                },
-                {
-                  "event_date":"2015-04-15",
-                  "event_time":"06:00",
-                  "stream_date":"2015-04-15",
-                  "stream_time":"06:00",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"RS08 out of service, repair to hydraulics",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-15",
-                  "event_time":"06:00",
-                  "stream_date":"2015-04-15",
-                  "stream_time":"06:00",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"high",
-                  "event":"RS08 out of service, repair to hydraulics, WARNING 1 day since PM completed, 16 hrs uptime",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-15",
-                  "event_time":"06:00",
-                  "stream_date":"2015-04-15",
-                  "stream_time":"06:00",
-                  "channel":"my-events",
-                  "stream":"",
-                  "priority":"low",
-                  "event":"RS08 out of service, repair to hydraulics, WARNING 1 day since PM completed, 16 hrs uptime",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-15",
-                  "event_time":"11:30",
-                  "stream_date":"2015-04-15",
-                  "stream_time":"11:30",
-                  "channel":"operations",
-                  "stream":"vessel",
-                  "priority":"low",
-                  "event":"MV Swift load completed, actual 56000 tons",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-15",
-                  "event_time":"08:00",
-                  "stream_date":"2015-04-15",
-                  "stream_time":"08:00",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"Warning: RS03 down > 5 days, expected return date <not known>",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-15",
-                  "event_time":"08:00",
-                  "stream_date":"2015-04-15",
-                  "stream_time":"08:00",
-                  "channel":"my-events",
-                  "stream":"",
-                  "priority":"low",
-                  "event":"Warning: RS03 down > 5 days, expected return date <not known>",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-15",
-                  "event_time":"08:00",
-                  "stream_date":"2015-04-15",
-                  "stream_time":"08:00",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"Warning: 2507 down > 5 days, expected return date 4/20, waiting for material",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-15",
-                  "event_time":"12:00",
-                  "stream_date":"2015-04-15",
-                  "stream_time":"12:00",
-                  "channel":"maintenance",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"RS10 return to service, repair, down for 30 hours",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-15",
-                  "event_time":"12:00",
-                  "stream_date":"2015-04-15",
-                  "stream_time":"12:00",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"RS10 return to service, repair, down for 30 hours",
-                  "link":""
-                },
-                {
-                  "event_date":"2015-04-15",
-                  "event_time":"16:00",
-                  "stream_date":"2015-04-15",
-                  "stream_time":"16:00",
-                  "channel":"operations",
-                  "stream":"equipment",
-                  "priority":"low",
-                  "event":"RS11 return to service, repair to cooling system, down for 56 hrs",
-                  "link":""
-                }
-              ],
+      events: eventJson,
       selectedItem: this.getParams().eventId,
       activePage: activePage,
       activeChannel: activeChannel,
       activeStream: activeStream,
       filterText: '',
-      categories: [{'category':'My Events','slug':'my-events','subs':['Approval','User alert']},{'category':'Maintenance','slug':'maintenance','subs':['Equipment','Inventory','Purchasing','Work']},{'category':'Operations','slug':'operations','subs':['Vessel','Equipment Forecast','Volumes','Equipment']},{'category':'Safety','slug':'safety','subs':['Incident','Environmental','Public Complaint','Work']},{'category':'Finance','slug':'finance','subs':['Forecast','History']}]
+      timeFilter: 'week',
+      categories: [{'category':'My Events','slug':'my-events','subs':['Approval','Flagged']},{'category':'Maintenance','slug':'maintenance','subs':['Equipment','Inventory','Purchasing','Work']},{'category':'Operations','slug':'operations','subs':['Vessel','Equipment Forecast','Volume','Equipment']},{'category':'Safety','slug':'safety','subs':['Incident','Environmental','Public Complaint','Work']},{'category':'Finance','slug':'finance','subs':['Forecast','History']}]
     };
   },
   componentDidMount: function () {
@@ -833,9 +993,11 @@ var App = React.createClass({displayName: "App",
     if (this.context.router.getCurrentParams().channelId && !this.context.router.getCurrentParams().streamId) {
       this.setState({ activeChannel: this.context.router.getCurrentParams().channelId }); 
       this.setState({ activeStream: 'all' });
+      this.setState({ activePage: this.context.router.getCurrentParams().channelId }); 
     } else if (this.context.router.getCurrentParams().streamId) {
       this.setState({ activeChannel: this.context.router.getCurrentParams().channelId });
       this.setState({ activeStream: this.context.router.getCurrentParams().streamId }); 
+      this.setState({ activePage: this.context.router.getCurrentParams().channelId });
     } else if (this.context.router.getCurrentParams().eventId) {
       this.setState({ activeChannel: '' });
       this.setState({ activeStream: 'all' }); 
@@ -858,10 +1020,15 @@ var App = React.createClass({displayName: "App",
           React.createElement("h1", null, React.createElement("a", {href: "/#/", className: "company-logo"}, "Stream|vu")), 
 
           React.createElement("div", {className: "breadcrumbs"}, 
-            React.createElement("div", {className: "breadcrumb-item breadcrumb-home"}, React.createElement("a", {href: "/#/"}, "Home")), 
-            React.createElement("div", {className:  this.state.activeChannel !=='' ? 'breadcrumb-item breadcrumb-channel' : 'hidden'}, React.createElement("a", {href: "#/events/" + this.state.activeChannel},  this.state.activeChannel !=='' ? this.state.activeChannel : '')), 
-            React.createElement("div", {className:  this.state.activeStream !=='' ? 'breadcrumb-item breadcrumb-stream' : 'hidden'}, React.createElement("a", {href: "#/events/" + this.state.activeChannel + "/" + this.state.activeStream},  this.state.activeStream !=='' ? this.state.activeStream : '')), 
+            React.createElement("div", {className:  this.state.activePage !=='home' ? 'breadcrumb-item breadcrumb-home' : 'hidden'}, React.createElement("a", {href: "/#/"}, "Home")), 
+            React.createElement("div", {className:  this.state.activeChannel !=='' ? 'breadcrumb-item breadcrumb-channel' : 'hidden'}, React.createElement("a", {href: "#/c/" + this.state.activeChannel},  this.state.activeChannel !=='' ? this.state.activeChannel : '')), 
+            React.createElement("div", {className:  this.state.activeStream !=='' && this.state.activeStream !== 'all' ? 'breadcrumb-item breadcrumb-stream' : 'hidden'}, React.createElement("a", {href: "#/c/" + this.state.activeChannel + "/" + this.state.activeStream},  this.state.activeStream !=='' ? this.state.activeStream : '')), 
             React.createElement("div", {className:  this.state.filterText !=='' ? 'breadcrumb-item breadcrumb-text' : 'hidden'}, React.createElement("a", null,  this.state.filterText !=='' ? this.state.filterText : ''))
+          ), 
+      
+          React.createElement(TimeBox, {
+            timeFilter: this.state.timeFilter, 
+            handleChangeTime: this.handleChangeTime}
           ), 
           
           React.createElement(SearchBar, {
@@ -893,7 +1060,8 @@ var App = React.createClass({displayName: "App",
         
         React.createElement(RouteHandler, {events: this.state, 
                       onTabClick:  this.handleItemClick, 
-                      onTouchStart: this.handleItemClick})
+                      onTouchStart: this.handleItemClick, 
+                      handleChangeTime: this.handleChangeTime})
       )
     );
   }
@@ -904,11 +1072,9 @@ var App = React.createClass({displayName: "App",
 
 var routes = (
   React.createElement(Route, {name: "home", handler: App, path: "/"}, 
-    React.createElement(Route, {name: "categoryItem", path: "c/:categoryId", handler: CategoryList}), 
-    React.createElement(Route, {name: "categories", path: "categories", handler: CategoryList}), 
-    React.createElement(Route, {name: "events", path: "events", handler: EventList}), 
-    React.createElement(Route, {name: "eventChannelStream", path: "events/:channelId/:streamId", handler: CategoryList}), 
-    React.createElement(Route, {name: "eventItem", path: "events/:channelId", handler: CategoryList}), 
+    React.createElement(Route, {name: "CategoryItem", path: "c/:categoryId", handler: CategoryList}), 
+    React.createElement(Route, {name: "EventChannelsStreams", path: "c/:channelId/:streamId", handler: CategoryList}), 
+    React.createElement(Route, {name: "Event", path: "event/:eventId", handler: EventItemDetail}), 
     React.createElement(DefaultRoute, {handler: CategoryList})
   ) 
 ); 
