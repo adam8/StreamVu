@@ -12,7 +12,7 @@ React.initializeTouchEvents(true);
 
 // Convenience 
 function slugify(text) {
-  // console.log('slugify: TODO: get rid of this!');
+  // console.log('slugify: TODO: do this on the server!');
   return text.toString().toLowerCase()
     .replace(/\s+/g, '-')           // Replace spaces with -
     .replace(/\:+/g, '-')           // Replace colon with dash
@@ -28,9 +28,11 @@ function randomStr(num) {
     }
     return text;
 }
-
-// Hard Coded Events
-var eventJson = [ {
+function sortJSON(obj) {
+  return obj.sort(function(a,b) { console.log('sorting...');return b.id.localeCompare(a.id) } );
+}
+// Hard Coded Events, now hosted on: https://streamvu-app.appspot.com/stream
+/*var eventJson = [ {
                   "id":"2015-04-13-05-15-ppp",
                   "event_date":"2015-04-13",
                   "event_time":"05:15",
@@ -49,7 +51,7 @@ var eventJson = [ {
                   "stream_date":"2015-04-13",
                   "stream_time":"07:45",
                   "channel":"operations",
-                  "stream":"forecast",
+                  "stream":"equipment-forecast",
                   "priority":"high",
                   "event":"shortage forecast today, -3 30's, afternoon shift",
                   "link":"m.ax/z74y"
@@ -85,10 +87,10 @@ var eventJson = [ {
                   "stream_date":"2015-04-13",
                   "stream_time":"08:00",
                   "channel":"operations",
-                  "stream":"forecast",
+                  "stream":"equipment-forecast",
                   "priority":"high",
                   "event":"shortage forecast today, -3 RS, day shift",
-                  "link":"m.ax/kj8l"
+                  "link":"m.ax/kj8l" 
                 },
                 {
                   "id":"2015-04-13-08-00-xuw",
@@ -667,7 +669,10 @@ var eventJson = [ {
                   "link":""
                 }
 ];
-eventJson = eventJson.sort(function(a,b) { return b.id.localeCompare(a.id) } );
+*/
+
+
+
 
 /****** COMPONENTS *********/
 
@@ -683,26 +688,26 @@ var CategoryList = React.createClass({
     //console.log("this.props.events",this.props.events);
     var activeStream = this.props.events.activeStream;
     var items = this.props.events.categories.map(function(item, index) {
-      var subs = [];
-      var subs_array = item.subs.map(function(sub) {
-        subs.push(sub);
-      }.bind(this));
-      var prioritiesLow = [];
-      var prioritiesHigh = [];
-      var alerts = this.props.events.events.map(function(event) {
-        if ((event.channel == item.slug) && event.priority == "low") {
-          prioritiesLow.push(event);
-        } else if (event.channel == item.slug && event.priority == "high") {
-          prioritiesHigh.push(event);
-        }
-      }.bind(this));
-      //console.log("activeStream!?!?",this.props.events.activeStream);
+      // console.log('map cats');
+      // Temp: TODO calculate this server side
+      var prioritiesHigh = Math.floor(Math.random() * (9 - 2 + 1)) + 2;
+      var prioritiesLow = Math.floor(Math.random() * (23 - 2 + 1)) + 2;
+      // var prioritiesLow = [];
+      // var prioritiesHigh = [];
+      // var alerts = this.props.events.events.map(function(event) {
+      //   console.log('map events for alerts');
+      //   if ((event.channel == item.slug) && event.priority == "low") {
+      //     prioritiesLow.push(event);
+      //   } else if (event.channel == item.slug && event.priority == "high") {
+      //     prioritiesHigh.push(event);
+      //   }
+      // }.bind(this));
       return (
         <div className={"category-list-item category-list-" + item.slug} key={index} onClick={this.onClick.bind(this, item)} onTouchStart={this.onTouchStart.bind(this, item)}>
 
           <div className="category-alerts">
-            <div className={ prioritiesLow.length > 0 ? 'category-alert category-alert-low' : 'hidden' }>{ prioritiesLow.length }</div>
-            <div className={ prioritiesHigh.length > 0 ? 'category-alert category-alert-high' : 'hidden' }>{ prioritiesHigh.length }</div>
+            <div className={ prioritiesLow > 0 ? 'category-alert category-alert-low' : 'hidden' }>{ prioritiesLow }</div>
+            <div className={ prioritiesHigh > 0 ? 'category-alert category-alert-high' : 'hidden' }>{ prioritiesHigh }</div>
           </div>
     
           <div className="category-title">
@@ -711,10 +716,10 @@ var CategoryList = React.createClass({
             </h2>
           </div>
           
-          { subs.length ? <SubCategoryList category={ item.category } activeStream={ this.props.events.activeStream } subs={ subs } />  : '' }
+          { item.subs.length ? <SubCategoryList category={ item } activeStream={ this.props.events.activeStream } subs={ item.subs } />  : '' }
           
           <div className="events-inline">
-            <EventList events={ this.props.events } />
+            <EventList events={ this.props.events } user={ this.props.events.user } />
           </div>
           
         </div> 
@@ -723,9 +728,11 @@ var CategoryList = React.createClass({
     return <div className="category-list">{items}</div>;
   },
   onClick: function(item) {
+    // console.log('click');
     this.props.onTabClick(item);
   },
   onTouchStart: function(item) {
+    // console.log('touch');
     this.props.onTouchStart(item); 
   }
 });
@@ -736,13 +743,13 @@ var SubCategoryList = React.createClass({
     var activeStream = this.props.activeStream;
     var items = this.props.subs.map(function(item, index) {
       return (
-        <div className={slugify(item)==activeStream ? 'sub-category-list-item sub-category-active' : 'sub-category-list-item' } key={index}>
-        <a href={ "/#/c/" + slugify(cat) + "/" + slugify(item) }>{item}</a>
+        <div className={item.slug==activeStream ? 'sub-category-list-item sub-category-active' : 'sub-category-list-item' } key={index}>
+        <a href={ "/#/c/" + cat.slug + "/" + item.slug }>{item.name}</a>
         </div>
       );
     });
     return <div className="sub-category-list">
-    <div className={activeStream=='all' ? 'sub-category-list-item sub-category-active' : 'sub-category-list-item'}><a href={"/#/c/" + slugify(cat) }>All</a></div>
+      <div className={activeStream=='all' ? 'sub-category-list-item sub-category-active' : 'sub-category-list-item'}><a href={"/#/c/" + cat.slug }>All</a></div>
       {items}
     </div>;
   }
@@ -750,12 +757,7 @@ var SubCategoryList = React.createClass({
 
 var EventList = React.createClass({
   render: function () {
-    // console.log("activePage:", this.props.events.activePage);
-    // console.log("activeChannel:", this.props.events.activeChannel);
-    // console.log("activeStream:", this.props.events.activeStream);
     if (this.props.events) {
-      // var reverseEventsTemp = this.props.events.events.reverse();
-      // var reverseEventsTemp = this.props.events.events;
       var rows = [];
       var lastCategory = null;
       this.props.events.events.forEach(function(event, index) {
@@ -773,10 +775,9 @@ var EventList = React.createClass({
             return;
         }
         if (event.event_date !== lastCategory) {
-          //console.log('key', "date-item-" + this.props.events.activeChannel + '-' + this.props.events.activeStream + '-' + index);
           rows.push(<EventListDate date={event.event_date} key={ index + randomStr(5) } />);
         }
-        rows.push(<EventListItem event={event} key={ randomStr(5) } />);
+        rows.push(<EventListItem event={event} user={this.props.user} key={ randomStr(5) } />);
         lastCategory = event.event_date;
       }.bind(this));
     }
@@ -785,14 +786,30 @@ var EventList = React.createClass({
 });
 
 var EventListItem = React.createClass({
+  mixins: [Router.State, Navigation],
   contextTypes: {
     router: React.PropTypes.func
   },
+  getEventDetail: function(e) {
+    // this.props.handleEventDetail(this.props.thisTime);
+    // console.log('get event');
+    // {"/#/event/"+this.props.event.id}
+    e.stopPropagation();
+    e.preventDefault();
+    this.transitionTo("/event/"+this.props.event.id); 
+  },
   render: function() {
+    var dismissed = false;
+    if ( this.props.user.dismissed.indexOf(this.props.event.id) > -1 ) {
+      dismissed = true;
+    }
     return (
-        <div id={ 'id-' + this.props.event.id } key={ 'id-' + this.props.event.id } className={ 'event-list-item item-priority-' + this.props.event.priority }>
-        <div className="event-time">{ this.props.event.event_time }</div>
-        <div className="event-item-column event-title"><div className="event-item-priority-indicator"></div><a href={"/#/event/"+this.props.event.id}>{ this.props.event.event }</a>  {/* { this.props.event.channel } - { this.props.event.stream } */} </div>
+        <div id={ 'id-' + this.props.event.id } key={ 'id-' + this.props.event.id } className={ dismissed==true ? 'event-dismissed event-list-item item-priority-' + this.props.event.priority : 'event-list-item item-priority-' + this.props.event.priority }>
+          <div className="event-time">{ this.props.event.event_time }</div>
+          <div className="event-item-column event-title">
+            <div className="event-item-priority-indicator"></div>
+            <a href={"/#/event/"+this.props.event.id} onClick={ this.getEventDetail }>{ this.props.event.event }</a>
+          </div>
           <div className="event-item-actions">
             <div className="event-action event-item-flag">
               {/* <img src="/images/icon-comment-discussion.png" /> */}
@@ -804,7 +821,7 @@ var EventListItem = React.createClass({
             </div>
             <div className="event-action event-item-ok">
               {/* <img src="/images/icon-check.png" /> */}
-              <span>Dismiss</span>
+              <span>{ dismissed ? 'Undismiss' : 'Dismiss' }</span>
             </div>
           </div>
         </div>
@@ -854,7 +871,7 @@ var EventItemDetail = React.createClass({
             </tr>
             <tr>
               <td>Link</td>
-              <td>{ item.link == '' ? 'no link' : item.link }</td>
+              <td>{ item.link == '' ? 'Unavailable' : '' }<a href={ item.link == '' ? '#' : 'http://' + item.link } className={ item.link == '' ? 'hidden' : 'item-detail-link' }>{ item.link }</a></td>
             </tr>
             <tr>
               <td>Event Type History</td>
@@ -925,28 +942,52 @@ var App = React.createClass({
   contextTypes: {
     router: React.PropTypes.func
   },
+  componentDidMount: function () {
+    Router.HashLocation.addChangeListener(this._onChange);
+    var server = 'https://streamvu-app.appspot.com/stream';
+    var local = 'http://localhost:17096/stream';
+    $.get(server, function(result) {
+      if (this.isMounted()) {
+        this.setState({
+          events: sortJSON(result),
+        });
+      }
+    }.bind(this));
+  },
+  componentWillUnmount: function() {
+    Router.HashLocation.removeChangeListener(this._onChange);
+  },
   handleItemClick: function(item) {
-    if (this.state.activePage == slugify(item.category) ) {
+    console.log('handle item click: ');
+    if (this.state.activePage == item.slug ) {
       this.transitionTo('/'); 
     } else {
-      this.transitionTo('/c/' + slugify(item.category) ); 
+      this.transitionTo('/c/' + item.slug ); 
     }
   },
   handleUserInput: function(filterText) {
+    console.log('Handle User Input');
     this.setState({
       filterText: filterText
     });
   },
   handleChangeTime: function(newTime) {
+    console.log('handleChangeTime');
     this.setState({
       timeFilter: newTime
     });
+  },
+  handleDismissItem: function(newTime) {
+    console.log('handleDismissItem');
+    // this.setState({
+    //   user.dismiss: user.dismiss.append('hola')
+    // });
   },
   getInitialState: function() {
     var activePage = '';
     var activeChannel = '';
     var activeStream = 'all';
-
+    
     if (this.context.router.getCurrentParams().channelId && !this.context.router.getCurrentParams().streamId) {
       activePage = this.context.router.getCurrentParams().channelId;
       activeStream = 'all';
@@ -972,44 +1013,91 @@ var App = React.createClass({
     // console.log('activeChannel',activePage);
     // console.log('activePage',activePage);
     return { 
-      events: eventJson,
+      events: [],
       selectedItem: this.getParams().eventId,
       activePage: activePage,
       activeChannel: activeChannel,
       activeStream: activeStream,
       filterText: '',
       timeFilter: 'week',
-      categories: [{'category':'My Events','slug':'my-events','subs':['Approval','Flagged']},{'category':'Maintenance','slug':'maintenance','subs':['Equipment','Inventory','Purchasing','Work']},{'category':'Operations','slug':'operations','subs':['Vessel','Equipment Forecast','Volume','Equipment']},{'category':'Safety','slug':'safety','subs':['Incident','Environmental','Public Complaint','Work']},{'category':'Finance','slug':'finance','subs':['Forecast','History']}]
+      user: {"dismissed":['2015-04-15-08-00-yyy','2015-04-15-12-00-ddd','2015-04-13-05-15-ppp','abc123'] },
+      categories: [
+        {'category':'My Events','slug':'my-events',
+          'subs':[
+            {'name':'Approval','slug':'approval'},
+            {'name':'Flagged','slug':'flagged'}
+          ]
+        },
+        {'category':'Maintenance','slug':'maintenance',
+          'subs':[
+            {'name':'Equipment','slug':'equipment'},
+            {'name':'Inventory','slug':'inventory'},
+            {'name':'Purchasing','slug':'purchasing'},
+            {'name':'Work','slug':'work'}
+          ]
+        },
+        {'category':'Operations','slug':'operations',
+          'subs':[
+            {'name':'Vessel','slug':'vessel'},
+            {'name':'Equipment Forecast','slug':'equipment-forecast'},
+            {'name':'Volume','slug':'volume'},
+            {'name':'Equipment','slug':'equipment'}
+          ]
+        },
+        {'category':'Safety','slug':'safety',
+          'subs':[
+            {'name':'Incident','slug':'incident'},
+            {'name':'Environmental','slug':'environmental'},
+            {'name':'Public Complaint','slug':'public-complaint'},
+            {'name':'Work','slug':'work'}
+          ]
+        },
+        {'category':'Finance','slug':'finance',
+          'subs':[
+            {'name':'Forecast','slug':'forecast'},
+            {'name':'History','slug':'history'}
+          ]
+        }
+      ]
     };
   },
-  componentDidMount: function () {
-    Router.HashLocation.addChangeListener(this._onChange);
-  },
-  componentWillUnmount: function() {
-    Router.HashLocation.removeChangeListener(this._onChange);
-  },
   _onChange: function() {
-    this.setState({ filterText: '' }); 
+    console.log('on change');
     if (this.context.router.getCurrentParams().channelId && !this.context.router.getCurrentParams().streamId) {
-      this.setState({ activeChannel: this.context.router.getCurrentParams().channelId }); 
-      this.setState({ activeStream: 'all' });
-      this.setState({ activePage: this.context.router.getCurrentParams().channelId }); 
+      this.setState({ 
+        activeChannel: this.context.router.getCurrentParams().channelId,
+        activeStream: 'all',
+        activePage: this.context.router.getCurrentParams().channelId,
+        filterText: ''
+      }); 
     } else if (this.context.router.getCurrentParams().streamId) {
-      this.setState({ activeChannel: this.context.router.getCurrentParams().channelId });
-      this.setState({ activeStream: this.context.router.getCurrentParams().streamId }); 
-      this.setState({ activePage: this.context.router.getCurrentParams().channelId });
+      this.setState({ 
+        activeChannel: this.context.router.getCurrentParams().channelId,
+        activeStream: this.context.router.getCurrentParams().streamId,
+        activePage: this.context.router.getCurrentParams().channelId,
+        filterText: ''
+      });
     } else if (this.context.router.getCurrentParams().eventId) {
-      this.setState({ activeChannel: '' });
-      this.setState({ activeStream: 'all' }); 
-      this.setState({ activePage: this.context.router.getCurrentParams().eventId }); 
+      this.setState({ 
+        activeChannel: '',
+        activeStream: 'all',
+        activePage: this.context.router.getCurrentParams().eventId,
+        filterText: '' 
+      }); 
     } else if (this.context.router.getCurrentParams().categoryId) {
-      this.setState({ activeChannel: this.context.router.getCurrentParams().categoryId });
-      this.setState({ activeStream: 'all' }); 
-      this.setState({ activePage: this.context.router.getCurrentParams().categoryId }); 
+      this.setState({ 
+        activeChannel: this.context.router.getCurrentParams().categoryId,
+        activeStream: 'all',
+        activePage: this.context.router.getCurrentParams().categoryId,
+        filterText: '' 
+      }); 
     } else {
-      this.setState({ activeChannel: '' });
-      this.setState({ activeStream: 'all' }); 
-      this.setState({ activePage: "home" }); 
+      this.setState({ 
+        activeChannel: '',
+        activeStream: 'all',
+        activePage: "home",
+        filterText: '' 
+      }); 
     }
   },
   render: function () {
@@ -1061,7 +1149,8 @@ var App = React.createClass({
         <RouteHandler events={this.state} 
                       onTabClick={ this.handleItemClick }
                       onTouchStart={this.handleItemClick}
-                      handleChangeTime={this.handleChangeTime} />
+                      handleChangeTime={this.handleChangeTime}
+                      handleDismissItem={this.handleDismissItem} />
       </div>
     );
   }
@@ -1072,8 +1161,8 @@ var App = React.createClass({
 
 var routes = (
   <Route name="home" handler={App} path="/">
-    <Route name="CategoryItem" path="c/:categoryId" handler={CategoryList} /> 
     <Route name="EventChannelsStreams" path="c/:channelId/:streamId" handler={CategoryList} />
+    <Route name="CategoryItem" path="c/:categoryId" handler={CategoryList} /> 
     <Route name="Event" path="event/:eventId" handler={EventItemDetail} />
     <DefaultRoute handler={CategoryList}/>
   </Route> 
