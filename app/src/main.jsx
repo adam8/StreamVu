@@ -144,8 +144,8 @@ var EventList = React.createClass({
         // if (event.event_date !== lastCategory) {
         //   rows.push(<EventListDate date={event.event_date} key={ index + randomStr(5) } />);
         // }
-        rows.push(<EventListItem event={event} user={this.props.user} key={ event.id } />);
-        lastCategory = event.event_date;
+        rows.push(<EventListItem event={event} user={this.props.user} key={ event.id } />); 
+        lastCategory = event.event_date; 
       }.bind(this)); 
     }
     return <div className="event-list">{rows}</div>;
