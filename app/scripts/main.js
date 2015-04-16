@@ -41,8 +41,8 @@ function sortJSON(obj) {
 
 var EventListDate = React.createClass({displayName: "EventListDate",
   render: function() {
-    var day = moment(this.props.date, "YYYY-MM-DD"); 
-    return (React.createElement("div", {className: "event-list-date-row"},  day.format('ddd, MMM Do') ));
+    //var day = moment(this.props.date, "YYYY-MM-DD"); 
+    return (React.createElement("div", {className: "event-list-date-row"}, /* day.format('ddd, MMM Do') */" Date here"));
   }
 });
 
@@ -79,7 +79,7 @@ var CategoryList = React.createClass({displayName: "CategoryList",
             )
           ), 
           
-           item.subs.length ? React.createElement(SubCategoryList, {category:  item, activeStream:  this.props.events.activeStream, subs:  item.subs})  : '', 
+          /*  item.subs.length ? <SubCategoryList category={ item } activeStream={ this.props.events.activeStream } subs={ item.subs } />  : ''  */
           
           React.createElement("div", {className: "events-inline"}, 
             React.createElement(EventList, {events:  this.props.events, user:  this.props.events.user})
@@ -100,23 +100,25 @@ var CategoryList = React.createClass({displayName: "CategoryList",
   }
 });
 
-var SubCategoryList = React.createClass({displayName: "SubCategoryList", 
+/*
+var SubCategoryList = React.createClass({ 
   render: function () {
     var cat = this.props.category;
     var activeStream = this.props.activeStream;
     var items = this.props.subs.map(function(item, index) {
       return (
-        React.createElement("div", {className: item.slug==activeStream ? 'sub-category-list-item sub-category-active' : 'sub-category-list-item', key: index}, 
-        React.createElement("a", {href:  "/#/c/" + cat.slug + "/" + item.slug}, item.name)
-        )
+        <div className={item.slug==activeStream ? 'sub-category-list-item sub-category-active' : 'sub-category-list-item' } key={index}>
+          <a href={ "/#/c/" + cat.slug + "/" + item.slug }>{item.name}</a>
+        </div>
       );
     });
-    return React.createElement("div", {className: "sub-category-list"}, 
-      React.createElement("div", {className: activeStream=='all' ? 'sub-category-list-item sub-category-active' : 'sub-category-list-item'}, React.createElement("a", {href: "/#/c/" + cat.slug}, "All")), 
-      items
-    );
+    return <div className="sub-category-list">
+      <div className={activeStream=='all' ? 'sub-category-list-item sub-category-active' : 'sub-category-list-item'}><a href={"/#/c/" + cat.slug }>All</a></div>
+      {items}
+    </div>;
   }
 });
+*/
 
 var EventList = React.createClass({displayName: "EventList",
   render: function () {

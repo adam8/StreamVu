@@ -41,8 +41,8 @@ function sortJSON(obj) {
 
 var EventListDate = React.createClass({
   render: function() {
-    var day = moment(this.props.date, "YYYY-MM-DD"); 
-    return (<div className="event-list-date-row">{ day.format('ddd, MMM Do') }</div>);
+    //var day = moment(this.props.date, "YYYY-MM-DD"); 
+    return (<div className="event-list-date-row">{/* day.format('ddd, MMM Do') */} Date here</div>);
   }
 });
 
@@ -79,7 +79,7 @@ var CategoryList = React.createClass({
             </h2>
           </div>
           
-          { item.subs.length ? <SubCategoryList category={ item } activeStream={ this.props.events.activeStream } subs={ item.subs } />  : '' }
+          {/*  item.subs.length ? <SubCategoryList category={ item } activeStream={ this.props.events.activeStream } subs={ item.subs } />  : ''  */}
           
           <div className="events-inline">
             <EventList events={ this.props.events } user={ this.props.events.user } />
@@ -100,6 +100,7 @@ var CategoryList = React.createClass({
   }
 });
 
+/*
 var SubCategoryList = React.createClass({ 
   render: function () {
     var cat = this.props.category;
@@ -107,7 +108,7 @@ var SubCategoryList = React.createClass({
     var items = this.props.subs.map(function(item, index) {
       return (
         <div className={item.slug==activeStream ? 'sub-category-list-item sub-category-active' : 'sub-category-list-item' } key={index}>
-        <a href={ "/#/c/" + cat.slug + "/" + item.slug }>{item.name}</a>
+          <a href={ "/#/c/" + cat.slug + "/" + item.slug }>{item.name}</a>
         </div>
       );
     });
@@ -117,6 +118,7 @@ var SubCategoryList = React.createClass({
     </div>;
   }
 });
+*/
 
 var EventList = React.createClass({
   render: function () {
