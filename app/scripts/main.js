@@ -172,7 +172,7 @@ var EventListItem = React.createClass({displayName: "EventListItem",
       dismissed = true;
     }
     return (
-        React.createElement("div", null, "event")
+        React.createElement("div", null, "event!!")
         // <div id={ 'id-' + this.props.event.id } key={ 'id-' + this.props.event.id } className={ dismissed==true ? 'event-dismissed event-list-item item-priority-' + this.props.event.priority : 'event-list-item item-priority-' + this.props.event.priority }>
         //   <div className="event-time">{ this.props.event.event_time }</div>
         //   <div className="event-item-column event-title">
