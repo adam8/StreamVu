@@ -33,8 +33,6 @@ function sortJSON(obj) {
 
 
 
-
-
 /****** COMPONENTS *********/
 
 var EventListDate = React.createClass({displayName: "EventListDate",
@@ -66,7 +64,7 @@ var CategoryList = React.createClass({displayName: "CategoryList",
       //   }
       // }.bind(this));
       return (
-        React.createElement("div", {className: "category-list-item category-list-" + item.slug, key: index, onClick: this.onClick.bind(this, item), onTouchStart: this.onTouchStart.bind(this, item)}, 
+      React.createElement("div", {className: "category-list-item category-list-" + item.slug, key: index}, 
 
           React.createElement("div", {className: "category-alerts"}, 
             React.createElement("div", {className:  prioritiesLow > 0 ? 'category-alert category-alert-low' : 'hidden'},  prioritiesLow ), 
@@ -75,7 +73,7 @@ var CategoryList = React.createClass({displayName: "CategoryList",
     
           React.createElement("div", {className: "category-title"}, 
             React.createElement("h2", null, 
-               item.category
+              React.createElement("a", {href: "/#/c/" + item.slug},  item.category)
             )
           ), 
           
@@ -91,13 +89,13 @@ var CategoryList = React.createClass({displayName: "CategoryList",
     return React.createElement("div", {className: "category-list"}, items);
   },
   onClick: function(item) {
-    // console.log('click');
+    console.log('click');
     this.props.onTabClick(item);
-  },
-  onTouchStart: function(item) {
-    // console.log('touch');
-    this.props.onTouchStart(item); 
-  }
+  }// ,
+//   onTouchStart: function(item) {
+//     console.log('touch');
+//     this.props.onTouchStart(item);
+//   }
 });
 
 /*
@@ -516,7 +514,7 @@ var App = React.createClass({displayName: "App",
         
         React.createElement(RouteHandler, {events: this.state, 
                       onTabClick:  this.handleItemClick, 
-                      onTouchStart: this.handleItemClick, 
+                      //onTouchStart={this.handleItemClick}
                       handleChangeTime: this.handleChangeTime, 
                       handleDismissItem: this.handleDismissItem})
       )

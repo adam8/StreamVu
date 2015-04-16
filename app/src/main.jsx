@@ -33,8 +33,6 @@ function sortJSON(obj) {
 
 
 
-
-
 /****** COMPONENTS *********/
 
 var EventListDate = React.createClass({
@@ -66,7 +64,7 @@ var CategoryList = React.createClass({
       //   }
       // }.bind(this));
       return (
-        <div className={"category-list-item category-list-" + item.slug} key={index} onClick={this.onClick.bind(this, item)} onTouchStart={this.onTouchStart.bind(this, item)}>
+      <div className={"category-list-item category-list-" + item.slug} key={index}> 
 
           <div className="category-alerts">
             <div className={ prioritiesLow > 0 ? 'category-alert category-alert-low' : 'hidden' }>{ prioritiesLow }</div>
@@ -75,7 +73,7 @@ var CategoryList = React.createClass({
     
           <div className="category-title">
             <h2>
-              { item.category }
+              <a href={"/#/c/" + item.slug }>{ item.category }</a>
             </h2>
           </div>
           
@@ -91,13 +89,13 @@ var CategoryList = React.createClass({
     return <div className="category-list">{items}</div>;
   },
   onClick: function(item) {
-    // console.log('click');
+    console.log('click');
     this.props.onTabClick(item);
-  },
-  onTouchStart: function(item) {
-    // console.log('touch');
-    this.props.onTouchStart(item); 
-  }
+  }// ,
+//   onTouchStart: function(item) {
+//     console.log('touch');
+//     this.props.onTouchStart(item);
+//   }
 });
 
 /*
@@ -516,7 +514,7 @@ var App = React.createClass({
         
         <RouteHandler events={this.state} 
                       onTabClick={ this.handleItemClick }
-                      onTouchStart={this.handleItemClick}
+                      //onTouchStart={this.handleItemClick}
                       handleChangeTime={this.handleChangeTime}
                       handleDismissItem={this.handleDismissItem} />
       </div>
