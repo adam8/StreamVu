@@ -307,12 +307,13 @@ var App = React.createClass({
   },
   componentDidMount: function () {
     Router.HashLocation.addChangeListener(this._onChange);
+    console.log('_onChange 1');
     var server = 'https://streamvu-app.appspot.com/stream';
     var local = 'http://localhost:17096/stream';
     $.get(server, function(result) {
       if (this.isMounted()) {
         this.setState({
-          events: sortJSON(result),
+          events: sortJSON(result), 
         });
       }
     }.bind(this));
@@ -455,6 +456,7 @@ var App = React.createClass({
         filterText: '' 
       }); 
     } else {
+      console.log('else');
       this.setState({ 
         activeChannel: '',
         activeStream: 'all',
