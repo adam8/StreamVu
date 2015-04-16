@@ -175,7 +175,7 @@ var EventListItem = React.createClass({
     return (
 //        <div>event!!</div>
         <div id={ 'id-' + this.props.event.id } key={ 'id-' + this.props.event.id } className={ dismissed==true ? 'event-dismissed event-list-item item-priority-' + this.props.event.priority : 'event-list-item item-priority-' + this.props.event.priority }>
-          <div className="event-time">{ this.props.event.event_time }!</div>
+          <div className="event-time">{ this.props.event.event_time }</div>
           <div className="event-item-column event-title">
             <div className="event-item-priority-indicator"></div>
             <a href={"/#/event/"+this.props.event.id} onClick={ this.getEventDetail }>{ this.props.event.event }</a>
@@ -479,7 +479,7 @@ var App = React.createClass({
           <h1><a href="/#/" className="company-logo">Stream|vu</a></h1>
 
           <div className="breadcrumbs">
-            <div className={ this.state.activePage !=='home' ? 'breadcrumb-item breadcrumb-home' : 'hidden' }><a href="/#/">Home</a></div>
+            <div className={ this.state.activePage ==='home' ? 'breadcrumb-item breadcrumb-home' : 'hidden' }><a href="/#/">Home</a></div>
             <div className={ this.state.activeChannel !=='' ? 'breadcrumb-item breadcrumb-channel' : 'hidden' }><a href={"#/c/" + this.state.activeChannel }>{ this.state.activeChannel !=='' ? this.state.activeChannel : '' }</a></div>
             <div className={ this.state.activeStream !=='' && this.state.activeStream !== 'all' ? 'breadcrumb-item breadcrumb-stream' : 'hidden' }><a href={"#/c/" + this.state.activeChannel + "/" + this.state.activeStream }>{ this.state.activeStream !=='' ? this.state.activeStream : '' }</a></div>
             <div className={ this.state.filterText !=='' ? 'breadcrumb-item breadcrumb-text' : 'hidden' }><a>{ this.state.filterText !=='' ? this.state.filterText : '' }</a></div>

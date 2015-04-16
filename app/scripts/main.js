@@ -175,7 +175,7 @@ var EventListItem = React.createClass({displayName: "EventListItem",
     return (
 //        <div>event!!</div>
         React.createElement("div", {id:  'id-' + this.props.event.id, key:  'id-' + this.props.event.id, className:  dismissed==true ? 'event-dismissed event-list-item item-priority-' + this.props.event.priority : 'event-list-item item-priority-' + this.props.event.priority}, 
-          React.createElement("div", {className: "event-time"},  this.props.event.event_time, "!"), 
+          React.createElement("div", {className: "event-time"},  this.props.event.event_time), 
           React.createElement("div", {className: "event-item-column event-title"}, 
             React.createElement("div", {className: "event-item-priority-indicator"}), 
             React.createElement("a", {href: "/#/event/"+this.props.event.id, onClick:  this.getEventDetail},  this.props.event.event)
@@ -479,7 +479,7 @@ var App = React.createClass({displayName: "App",
           React.createElement("h1", null, React.createElement("a", {href: "/#/", className: "company-logo"}, "Stream|vu")), 
 
           React.createElement("div", {className: "breadcrumbs"}, 
-            React.createElement("div", {className:  this.state.activePage !=='home' ? 'breadcrumb-item breadcrumb-home' : 'hidden'}, React.createElement("a", {href: "/#/"}, "Home")), 
+            React.createElement("div", {className:  this.state.activePage ==='home' ? 'breadcrumb-item breadcrumb-home' : 'hidden'}, React.createElement("a", {href: "/#/"}, "Home")), 
             React.createElement("div", {className:  this.state.activeChannel !=='' ? 'breadcrumb-item breadcrumb-channel' : 'hidden'}, React.createElement("a", {href: "#/c/" + this.state.activeChannel},  this.state.activeChannel !=='' ? this.state.activeChannel : '')), 
             React.createElement("div", {className:  this.state.activeStream !=='' && this.state.activeStream !== 'all' ? 'breadcrumb-item breadcrumb-stream' : 'hidden'}, React.createElement("a", {href: "#/c/" + this.state.activeChannel + "/" + this.state.activeStream},  this.state.activeStream !=='' ? this.state.activeStream : '')), 
             React.createElement("div", {className:  this.state.filterText !=='' ? 'breadcrumb-item breadcrumb-text' : 'hidden'}, React.createElement("a", null,  this.state.filterText !=='' ? this.state.filterText : ''))
