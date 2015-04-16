@@ -124,32 +124,33 @@ var SubCategoryList = React.createClass({
 
 var EventList = React.createClass({displayName: "EventList",
   render: function () {
-    // if (this.props.events) {
-//       var rows = [];
-//       var lastCategory = null;
-//       this.props.events.events.forEach(function(event, index) {
-//         if (this.props.events.activeChannel !== '') {
-//           if (event.channel.toLowerCase().indexOf(this.props.events.activeChannel) === -1) {
-//             return;
-//           }
-//         }
-//         if (this.props.events.activeStream !== '' && this.props.events.activeStream !== 'all') {
-//           if (event.stream.toLowerCase().indexOf(this.props.events.activeStream) === -1) {
-//             return;
-//           }
-//         }
-//         if (event.event.toLowerCase().indexOf(this.props.events.filterText) === -1) {
-//             return;
-//         }
-//         if (event.event_date !== lastCategory) {
-//           rows.push(<EventListDate date={event.event_date} key={ index + randomStr(5) } />);
-//         }
-//         rows.push(<EventListItem event={event} user={this.props.user} key={ randomStr(5) } />);
-//         lastCategory = event.event_date;
-//       }.bind(this));
-//     }
-//     return <div className="event-list">{rows}</div>;
-        return React.createElement("div", null, "hola")
+    if (this.props.events) {
+      var rows = [];
+      var lastCategory = null;
+      this.props.events.events.forEach(function(event, index) {
+        // if (this.props.events.activeChannel !== '') {
+        //   if (event.channel.toLowerCase().indexOf(this.props.events.activeChannel) === -1) {
+        //     return;
+        //   }
+        // }
+        // if (this.props.events.activeStream !== '' && this.props.events.activeStream !== 'all') {
+        //   if (event.stream.toLowerCase().indexOf(this.props.events.activeStream) === -1) {
+        //     return;
+        //   }
+        // }
+        // if (event.event.toLowerCase().indexOf(this.props.events.filterText) === -1) {
+        //     return;
+        // }
+        // if (event.event_date !== lastCategory) {
+        //   rows.push(<EventListDate date={event.event_date} key={ index + randomStr(5) } />);
+        // }
+        // rows.push(<EventListItem event={event} user={this.props.user} key={ randomStr(5) } />);
+        rows.push('<div>test event</div>');
+        lastCategory = event.event_date;
+      }.bind(this)); 
+    }
+    return React.createElement("div", {className: "event-list"}, rows);
+        
   }
 });
 
