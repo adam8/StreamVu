@@ -7,9 +7,6 @@ var Link = Router.Link;
 var Navigation = Router.Navigation;
 var RouteHandler = Router.RouteHandler;
 
-// Initalize Touch Events
-React.initializeTouchEvents(true);
-
 
 // Convenience 
 function slugify(text) {
@@ -69,7 +66,7 @@ var CategoryList = React.createClass({displayName: "CategoryList",
       //   }
       // }.bind(this));
       return (
-        React.createElement("div", {className: "category-list-item category-list-" + item.slug, key: index, onClick: this.onClick.bind(this, item), onTouchEnd: this.onTouchEnd.bind(this, item)}, 
+        React.createElement("div", {className: "category-list-item category-list-" + item.slug, key: index, onClick: this.onClick.bind(this, item), onTouchStart: this.onTouchStart.bind(this, item)}, 
 
           React.createElement("div", {className: "category-alerts"}, 
             React.createElement("div", {className:  prioritiesLow > 0 ? 'category-alert category-alert-low' : 'hidden'},  prioritiesLow ), 
@@ -97,9 +94,9 @@ var CategoryList = React.createClass({displayName: "CategoryList",
     // console.log('click');
     this.props.onTabClick(item);
   },
-  onTouchEnd: function(item) {
+  onTouchStart: function(item) {
     // console.log('touch');
-    this.props.onTouchEnd(item); 
+    this.props.onTouchStart(item); 
   }
 });
 
@@ -519,7 +516,7 @@ var App = React.createClass({displayName: "App",
         
         React.createElement(RouteHandler, {events: this.state, 
                       onTabClick:  this.handleItemClick, 
-                      onTouchEnd: this.handleItemClick, 
+                      onTouchStart: this.handleItemClick, 
                       handleChangeTime: this.handleChangeTime, 
                       handleDismissItem: this.handleDismissItem})
       )
