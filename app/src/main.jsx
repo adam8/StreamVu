@@ -41,20 +41,22 @@ function sortJSON(obj) {
 
 var EventListDate = React.createClass({
   render: function() {
-    //var day = moment(this.props.date, "YYYY-MM-DD"); 
-    return (<div className="event-list-date-row">{/* day.format('ddd, MMM Do') */} Date here</div>);
+    console.log('date here');
+    var day = moment(this.props.date, "YYYY-MM-DD"); 
+    return (<div className="event-list-date-row">{ day.format('ddd, MMM Do') }</div>);
   }
 });
 
 var CategoryList = React.createClass({ 
   render: function () {
-    //console.log("this.props.events",this.props.events);
     var activeStream = this.props.events.activeStream;
     var items = this.props.events.categories.map(function(item, index) {
-      // console.log('map cats');
       // Temp: TODO calculate this server side
-      var prioritiesHigh = Math.floor(Math.random() * (9 - 2 + 1)) + 2;
-      var prioritiesLow = Math.floor(Math.random() * (23 - 2 + 1)) + 2;
+      
+      // var prioritiesHigh = Math.floor(Math.random() * (9 - 2 + 1)) + 2;
+      var prioritiesHigh = 2;
+      var prioritiesLow = 12;
+      
       // var prioritiesLow = [];
       // var prioritiesHigh = [];
       // var alerts = this.props.events.events.map(function(event) {
@@ -122,31 +124,32 @@ var SubCategoryList = React.createClass({
 
 var EventList = React.createClass({
   render: function () {
-    if (this.props.events) {
-      var rows = [];
-      var lastCategory = null;
-      this.props.events.events.forEach(function(event, index) {
-        if (this.props.events.activeChannel !== '') {
-          if (event.channel.toLowerCase().indexOf(this.props.events.activeChannel) === -1) {
-            return;
-          }
-        }
-        if (this.props.events.activeStream !== '' && this.props.events.activeStream !== 'all') {
-          if (event.stream.toLowerCase().indexOf(this.props.events.activeStream) === -1) {
-            return;
-          }
-        }
-        if (event.event.toLowerCase().indexOf(this.props.events.filterText) === -1) {
-            return;
-        }
-        if (event.event_date !== lastCategory) {
-          rows.push(<EventListDate date={event.event_date} key={ index + randomStr(5) } />);
-        }
-        rows.push(<EventListItem event={event} user={this.props.user} key={ randomStr(5) } />);
-        lastCategory = event.event_date;
-      }.bind(this));
-    }
-    return <div className="event-list">{rows}</div>;
+    // if (this.props.events) {
+//       var rows = [];
+//       var lastCategory = null;
+//       this.props.events.events.forEach(function(event, index) {
+//         if (this.props.events.activeChannel !== '') {
+//           if (event.channel.toLowerCase().indexOf(this.props.events.activeChannel) === -1) {
+//             return;
+//           }
+//         }
+//         if (this.props.events.activeStream !== '' && this.props.events.activeStream !== 'all') {
+//           if (event.stream.toLowerCase().indexOf(this.props.events.activeStream) === -1) {
+//             return;
+//           }
+//         }
+//         if (event.event.toLowerCase().indexOf(this.props.events.filterText) === -1) {
+//             return;
+//         }
+//         if (event.event_date !== lastCategory) {
+//           rows.push(<EventListDate date={event.event_date} key={ index + randomStr(5) } />);
+//         }
+//         rows.push(<EventListItem event={event} user={this.props.user} key={ randomStr(5) } />);
+//         lastCategory = event.event_date;
+//       }.bind(this));
+//     }
+//     return <div className="event-list">{rows}</div>;
+        return <div>hola</div>
   }
 });
 
