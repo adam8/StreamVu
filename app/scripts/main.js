@@ -172,28 +172,27 @@ var EventListItem = React.createClass({displayName: "EventListItem",
       dismissed = true;
     }
     return (
-        React.createElement("div", null, "event!!")
-        // <div id={ 'id-' + this.props.event.id } key={ 'id-' + this.props.event.id } className={ dismissed==true ? 'event-dismissed event-list-item item-priority-' + this.props.event.priority : 'event-list-item item-priority-' + this.props.event.priority }>
-        //   <div className="event-time">{ this.props.event.event_time }</div>
-        //   <div className="event-item-column event-title">
-        //     <div className="event-item-priority-indicator"></div>
-        //     <a href={"/#/event/"+this.props.event.id} onClick={ this.getEventDetail }>{ this.props.event.event }</a>
-        //   </div>
-        //   <div className="event-item-actions">
-        //     <div className="event-action event-item-flag">
-        //       {/* <img src="/images/icon-comment-discussion.png" /> */}
-        //       <span>{ this.props.event.priority == 'high' ? 'Unflag' : 'Flag' }</span>
-        //     </div>
-        //     <div className="event-action event-item-discuss">
-        //       {/* <img src="/images/icon-comment-discussion.png" /> */}
-        //       <span>Assign</span>
-        //     </div>
-        //     <div className="event-action event-item-ok">
-        //       {/* <img src="/images/icon-check.png" /> */}
-        //       <span>{ dismissed ? 'Undismiss' : 'Dismiss' }</span>
-        //     </div>
-        //   </div>
-        // </div>
+//        <div>event!!</div>
+        React.createElement("div", {id:  'id-' + this.props.event.id, key:  'id-' + this.props.event.id, className:  dismissed==true ? 'event-dismissed event-list-item item-priority-' + this.props.event.priority : 'event-list-item item-priority-' + this.props.event.priority}, 
+          React.createElement("div", {className: "event-time"},  this.props.event.event_time), 
+          React.createElement("div", {className: "event-item-column event-title"}, 
+            React.createElement("div", {className: "event-item-priority-indicator"}), 
+            React.createElement("a", {href: "/#/event/"+this.props.event.id, onClick:  this.getEventDetail},  this.props.event.event)
+          )
+          /* 
+          <div className="event-item-actions">
+            <div className="event-action event-item-flag">
+              <span>{ this.props.event.priority == 'high' ? 'Unflag' : 'Flag' }</span>
+            </div>
+            <div className="event-action event-item-discuss">
+              <span>Assign</span>
+            </div>
+            <div className="event-action event-item-ok">
+              <span>{ dismissed==true ? 'Undismiss' : 'Dismiss' }</span>
+            </div>
+          </div>
+          */
+        )
       )        
   }
 });
