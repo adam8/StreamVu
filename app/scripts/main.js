@@ -174,7 +174,7 @@ var EventListItem = React.createClass({displayName: "EventListItem",
     return (
 //        <div>event!!</div>
         React.createElement("div", {id:  'id-' + this.props.event.id, key:  'id-' + this.props.event.id, className:  dismissed==true ? 'event-dismissed event-list-item item-priority-' + this.props.event.priority : 'event-list-item item-priority-' + this.props.event.priority}, 
-          React.createElement("div", {className: "event-time"},  this.props.event.event_time), 
+          React.createElement("div", {className: "event-time"},  this.props.event.event_time, "!"), 
           React.createElement("div", {className: "event-item-column event-title"}, 
             React.createElement("div", {className: "event-item-priority-indicator"}), 
             React.createElement("a", {href: "/#/event/"+this.props.event.id, onClick:  this.getEventDetail},  this.props.event.event)
