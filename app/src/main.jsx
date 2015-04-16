@@ -64,7 +64,7 @@ var CategoryList = React.createClass({
       //   }
       // }.bind(this));
       return (
-      <div className={"category-list-item category-list-" + item.slug} key={index}> 
+        <div className={"category-list-item category-list-" + item.slug} key={index}>
 
           <div className="category-alerts">
             <div className={ prioritiesLow > 0 ? 'category-alert category-alert-low' : 'hidden' }>{ prioritiesLow }</div>
@@ -91,11 +91,13 @@ var CategoryList = React.createClass({
   onClick: function(item) {
     console.log('click');
     this.props.onTabClick(item);
-  }// ,
-//   onTouchStart: function(item) {
-//     console.log('touch');
-//     this.props.onTouchStart(item);
-//   }
+  }
+  /* ,
+  //   onTouchStart: function(item) {
+  //     console.log('touch');
+  //     this.props.onTouchStart(item);
+  //   }
+  */
 });
 
 /*
@@ -124,22 +126,22 @@ var EventList = React.createClass({
       var rows = [];
       var lastCategory = null;
       this.props.events.events.forEach(function(event, index) {
-        // if (this.props.events.activeChannel !== '') {
-        //   if (event.channel.toLowerCase().indexOf(this.props.events.activeChannel) === -1) {
-        //     return;
-        //   }
-        // }
-        // if (this.props.events.activeStream !== '' && this.props.events.activeStream !== 'all') {
-        //   if (event.stream.toLowerCase().indexOf(this.props.events.activeStream) === -1) {
-        //     return;
-        //   }
-        // }
-        // if (event.event.toLowerCase().indexOf(this.props.events.filterText) === -1) {
-        //     return;
-        // }
-        // if (event.event_date !== lastCategory) {
-        //   rows.push(<EventListDate date={event.event_date} key={ index + randomStr(5) } />);
-        // }
+        if (this.props.events.activeChannel !== 'all') {
+          if (event.channel.toLowerCase().indexOf(this.props.events.activeChannel) === -1) {
+            return;
+          }
+        }
+        if (this.props.events.activeStream !== '' && this.props.events.activeStream !== 'all') {
+          if (event.stream.toLowerCase().indexOf(this.props.events.activeStream) === -1) {
+            return;
+          }
+        }
+        if (event.event.toLowerCase().indexOf(this.props.events.filterText) === -1) {
+            return;
+        }
+        if (event.event_date !== lastCategory) {
+          rows.push(<EventListDate date={event.event_date} key={ index + randomStr(5) } />);
+        }
         rows.push(<EventListItem event={event} user={this.props.user} key={ event.id } />); 
         lastCategory = event.event_date; 
       }.bind(this)); 
@@ -168,7 +170,6 @@ var EventListItem = React.createClass({
       dismissed = true;
     }
     return (
-//        <div>event!!</div>
         <div id={ 'id-' + this.props.event.id } key={ 'id-' + this.props.event.id } className={ dismissed==true ? 'event-dismissed event-list-item item-priority-' + this.props.event.priority : 'event-list-item item-priority-' + this.props.event.priority }>
           <div className="event-time">{ this.props.event.event_time }</div>
           <div className="event-item-column event-title">
@@ -350,7 +351,7 @@ var App = React.createClass({
   },
   getInitialState: function() {
     var activePage = '';
-    var activeChannel = '';
+    var activeChannel = 'all';
     var activeStream = 'all';
     
     if (this.context.router.getCurrentParams().channelId && !this.context.router.getCurrentParams().streamId) {
@@ -362,7 +363,7 @@ var App = React.createClass({
       activeChannel = this.context.router.getCurrentParams().channelId;
       activeStream = this.context.router.getCurrentParams().streamId; 
     } else if (this.context.router.getCurrentParams().eventId) {
-      activeChannel = '';
+      activeChannel = 'all';
       activeStream = 'all';
       activePage = this.context.router.getCurrentParams().eventId; 
     } else if (this.context.router.getCurrentParams().categoryId) {
@@ -370,7 +371,7 @@ var App = React.createClass({
       activeStream = 'all';
       activePage = this.context.router.getCurrentParams().categoryId; 
     } else {
-      activeChannel = '';
+      activeChannel = 'all';
       activeStream = 'all';
       activePage = "home"; 
     }
@@ -386,6 +387,11 @@ var App = React.createClass({
       filterText: '',
       timeFilter: 'week',
       user: {"dismissed":['2015-04-15-08-00-yyy','2015-04-15-12-00-ddd','2015-04-13-05-15-ppp','abc123'] },
+      categories: [
+        {'category':'My Events','slug':'my-events'},
+        {'category':'All Events','slug':'all'}
+      ]
+      /*
       categories: [
         {'category':'My Events','slug':'my-events',
           'subs':[
@@ -424,6 +430,7 @@ var App = React.createClass({
           ]
         }
       ]
+      */
     };
   },
   _onChange: function() {
@@ -444,7 +451,7 @@ var App = React.createClass({
       });
     } else if (this.context.router.getCurrentParams().eventId) {
       this.setState({ 
-        activeChannel: '',
+        activeChannel: 'all',
         activeStream: 'all',
         activePage: this.context.router.getCurrentParams().eventId,
         filterText: '' 
@@ -459,7 +466,7 @@ var App = React.createClass({
     } else {
       console.log('else');
       this.setState({ 
-        activeChannel: '',
+        activeChannel: 'all',
         activeStream: 'all',
         activePage: "home",
         filterText: '' 

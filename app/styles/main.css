@@ -273,7 +273,7 @@ h1 {
 }
 .category-title h2 {
   font-size: 20px; 
-  flex: 1 1 100%;
+  flex: 1 0 50px;
 }
 .category-title a { text-decoration: none; color: #222; }
 .category-title h2:hover {
@@ -319,6 +319,7 @@ h1 {
   flex: 1 auto 400px;
 }
 
+.activePage-all .category-list-all .category-alerts,
 .activePage-my-events .category-list-my-events .category-alerts,
 .activePage-maintenance .category-list-maintenance .category-alerts,
 .activePage-operations .category-list-operations .category-alerts,
@@ -332,14 +333,16 @@ h1 {
   flex: 1 1 22vh;
 }
 
+.activePage-all .category-list-all,
 .activePage-my-events .category-list-my-events,
 .activePage-maintenance .category-list-maintenance,
 .activePage-operations .category-list-operations,
 .activePage-safety .category-list-safety,
 .activePage-finance .category-list-finance {
-  flex: 1 1 60vh;
+  flex: 100 0 50px;
 }
 
+.activePage-all .category-list-all .sub-category-list,
 .activePage-my-events .category-list-my-events .sub-category-list,
 .activePage-maintenance .category-list-maintenance .sub-category-list,
 .activePage-operations .category-list-operations .sub-category-list,
@@ -350,6 +353,7 @@ h1 {
   opacity:1;
 }
 
+.activePage-all .category-list-all .events-inline,
 .activePage-my-events .category-list-my-events .events-inline,
 .activePage-maintenance .category-list-maintenance .events-inline,
 .activePage-operations .category-list-operations .events-inline,
@@ -370,7 +374,7 @@ h1 {
 }
 
 .category-list-item {
-  flex: 1 0;
+  flex: 1 0 50px;
   border: 1px solid #f6f6f6; 
   overflow: hidden;
 }
