@@ -473,7 +473,7 @@ var App = React.createClass({
   },
   render: function () {
     return (
-      <div className={ "activePage-" + this.state.activePage + " activeChannel-" + this.state.activeChannel + " activeStream-" + this.state.activeStream }>
+      <div className={ "app-inner activePage-" + this.state.activePage + " activeChannel-" + this.state.activeChannel + " activeStream-" + this.state.activeStream }>
         <div id="header">
 
           <h1><a href="/#/" className="company-logo">Stream|vu</a></h1>

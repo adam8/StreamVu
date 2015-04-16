@@ -473,7 +473,7 @@ var App = React.createClass({displayName: "App",
   },
   render: function () {
     return (
-      React.createElement("div", {className:  "activePage-" + this.state.activePage + " activeChannel-" + this.state.activeChannel + " activeStream-" + this.state.activeStream}, 
+      React.createElement("div", {className:  "app-inner activePage-" + this.state.activePage + " activeChannel-" + this.state.activeChannel + " activeStream-" + this.state.activeStream}, 
         React.createElement("div", {id: "header"}, 
 
           React.createElement("h1", null, React.createElement("a", {href: "/#/", className: "company-logo"}, "Stream|vu")), 
