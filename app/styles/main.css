@@ -260,6 +260,7 @@ h1 {
 .category-list {
   padding-top: 50px;
   height: 100vh;
+  height: -webkit-calc(100vh - 0); 
   flex-direction: column;
 }
 .category-title {
@@ -571,3 +572,7 @@ button:hover {
 }
 
 
+
+@media only screen and (max-width: 600px) {
+  .time-options { display: none; }
+}
